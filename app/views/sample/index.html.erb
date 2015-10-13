@@ -1,0 +1,131 @@
+<%= form_for Address.new, url: { action: "index" } do |f| %>
+  <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
+  <%= f.text_field :street %>
+  <%= f.text_field :city %>
+  <%= f.text_field :state %>
+  <%= f.text_field :zip %>
+<% end %>
+
+<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1"><input name="utf8" type="hidden" value="✓">
+  <input type="hidden" name="authenticity_token" value="VVMX2CXRHSrKSO0Tu9Wpxn/OyAtxHPy7kb5pmfqzjUpxSkNHtxcMuSilrXsbK7NoLjf7nkUGr75qbOTambPJ6w==">
+  <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
+  <input type="text" name="address[street]" id="address_street">
+  <input type="text" name="address[city]" id="address_city">
+  <input type="text" name="address[state]" id="address_state">
+  <input type="text" name="address[zip]" id="address_zip">
+</form>
+
+<%= form_for Address.new, url: { action: "index" } do |f| %>
+  <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
+  <%= f.label :street %>
+  <%= f.text_field :street %>
+  <%= f.label :city %>
+  <%= f.text_field :city %>
+  <%= f.label :state %>
+  <%= f.text_field :state %>
+  <%= f.label :zip %>
+  <%= f.text_field :zip %>
+<% end %>
+
+<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
+  <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
+  <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
+  <label for="address_street">Street</label>
+  <input type="text" name="address[street]" id="address_street">
+  <label for="address_city">City</label>
+  <input type="text" name="address[city]" id="address_city">
+  <label for="address_state">State</label>
+  <input type="text" name="address[state]" id="address_state">
+  <label for="address_zip">Zip</label>
+  <input type="text" name="address[zip]" id="address_zip">
+</form>
+
+<!-- same thing using empty form builder -->
+<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+  <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
+  <%= f.label :street %>
+  <%= f.text_field :street %>
+  <%= f.label :city %>
+  <%= f.text_field :city %>
+  <%= f.label :state %>
+  <%= f.text_field :state %>
+  <%= f.label :zip %>
+  <%= f.text_field :zip %>
+<% end %>
+
+<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
+  <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
+  <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
+  <label for="address_street">Street</label>
+  <input type="text" name="address[street]" id="address_street">
+  <label for="address_city">City</label>
+  <input type="text" name="address[city]" id="address_city">
+  <label for="address_state">State</label>
+  <input type="text" name="address[state]" id="address_state">
+  <label for="address_zip">Zip</label>
+  <input type="text" name="address[zip]" id="address_zip">
+</form>
+
+<!-- label wrapping built in -->
+<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+  <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
+  <%= f.text_field :street %>
+  <%= f.text_field :city %>
+  <%= f.text_field :state %>
+  <%= f.text_field :zip %>
+<% end %>
+
+<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1">
+  <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="ceF+K9mSZCPiRPz8s7NjaUmgCFIY9wMptbXds6RmF77rREpmQ5HVGwjDxJL4diwq/r+FKXImbwstOuT61F4VVw==">
+  <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
+  <label for="address_street">
+    <span class="label-text">Street</span>
+    <input type="text" name="address[street]" id="address_street">
+  </label>
+  <label for="address_city">
+    <span class="label-text">City</span>
+    <input type="text" name="address[city]" id="address_city">
+  </label>
+  <label for="address_state">
+    <span class="label-text">State</span>
+    <input type="text" name="address[state]" id="address_state">
+  </label>
+  <label for="address_zip">
+    <span class="label-text">Zip</span>
+    <input type="text" name="address[zip]" id="address_zip">
+  </label>
+</form>
+
+<!-- label, errors and fieldset/legend built in -->
+<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+  <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
+  <%= f.text_field :street %>
+  <%= f.text_field :city %>
+  <%= f.text_field :state %>
+  <%= f.text_field :zip %>
+<% end %>
+
+<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1">
+  <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="tRSBbSviPWZf8aoDGDSgvgmdOtQgJ2XgvyqMzPTOyEkvsbUgseGMXrV2km1T8e/9voK3r0r2CcInpbWFhPbKoA==">
+  <fieldset>
+    <legend class="legend-text">Type</legend>
+    <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label>
+    <input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
+  </fieldset>
+  <label for="address_street">
+    <span class="label-text">Street</span>
+    <input type="text" name="address[street]" id="address_street">
+  </label>
+  <label for="address_city">
+    <span class="label-text">City</span>
+    <input type="text" name="address[city]" id="address_city">
+  </label>
+  <label for="address_state">
+    <span class="label-text">State</span>
+    <input type="text" name="address[state]" id="address_state">
+  </label>
+  <label for="address_zip">
+    <span class="label-text">Zip</span>
+    <input type="text" name="address[zip]" id="address_zip">
+  </label>
+</form>
