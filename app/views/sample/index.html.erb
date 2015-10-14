@@ -1,4 +1,4 @@
-<%= form_for Address.new, url: { action: "index" } do |f| %>
+<%= form_for Address.new, url: { action: "create" } do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.text_field :street %>
   <%= f.text_field :city %>
@@ -6,7 +6,7 @@
   <%= f.text_field :zip %>
 <% end %>
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1"><input name="utf8" type="hidden" value="✓">
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post" _lpchecked="1"><input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="VVMX2CXRHSrKSO0Tu9Wpxn/OyAtxHPy7kb5pmfqzjUpxSkNHtxcMuSilrXsbK7NoLjf7nkUGr75qbOTambPJ6w==">
   <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   <input type="text" name="address[street]" id="address_street">
@@ -15,7 +15,7 @@
   <input type="text" name="address[zip]" id="address_zip">
 </form>
 
-<%= form_for Address.new, url: { action: "index" } do |f| %>
+<%= form_for Address.new, url: { action: "create" } do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.label :street %>
   <%= f.text_field :street %>
@@ -27,7 +27,7 @@
   <%= f.text_field :zip %>
 <% end %>
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
   <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   <label for="address_street">Street</label>
@@ -41,7 +41,7 @@
 </form>
 
 <!-- same thing using empty form builder -->
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.label :street %>
   <%= f.text_field :street %>
@@ -53,7 +53,7 @@
   <%= f.text_field :zip %>
 <% end %>
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
   <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   <label for="address_street">Street</label>
@@ -67,7 +67,7 @@
 </form>
 
 <!-- label wrapping built in -->
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.text_field :street %>
   <%= f.text_field :city %>
@@ -75,7 +75,7 @@
   <%= f.text_field :zip %>
 <% end %>
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1">
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post" _lpchecked="1">
   <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="ceF+K9mSZCPiRPz8s7NjaUmgCFIY9wMptbXds6RmF77rREpmQ5HVGwjDxJL4diwq/r+FKXImbwstOuT61F4VVw==">
   <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   <label for="address_street">
@@ -97,15 +97,17 @@
 </form>
 
 <!-- label, errors and fieldset/legend built in -->
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.text_field :street %>
   <%= f.text_field :city %>
   <%= f.text_field :state %>
   <%= f.text_field :zip %>
+
+  <%= f.submit %>
 <% end %>
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1">
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post" _lpchecked="1">
   <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="tRSBbSviPWZf8aoDGDSgvgmdOtQgJ2XgvyqMzPTOyEkvsbUgseGMXrV2km1T8e/9voK3r0r2CcInpbWFhPbKoA==">
   <fieldset>
     <legend class="legend-text">Type</legend>
