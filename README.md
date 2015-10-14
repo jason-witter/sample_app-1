@@ -18,10 +18,10 @@ Most programming languages include html templating libraries and helpers. Rails 
 
 We're going to use a very basic address form. We'll have some address inputs and some radio buttons to specify the type of address it is.
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" } do |f| %>
+<%= form_for Address.new, url: { action: "create" } do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.text_field :street %>
   <%= f.text_field :city %>
@@ -30,16 +30,19 @@ We're going to use a very basic address form. We'll have some address inputs and
 <% end %>
 ```
 
-How it looks without CSS:
-
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1"><input name="utf8" type="hidden" value="✓">
+```html
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post" _lpchecked="1">
+  <input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="VVMX2CXRHSrKSO0Tu9Wpxn/OyAtxHPy7kb5pmfqzjUpxSkNHtxcMuSilrXsbK7NoLjf7nkUGr75qbOTambPJ6w==">
+
   <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label><input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
+
   <input type="text" name="address[street]" id="address_street">
   <input type="text" name="address[city]" id="address_city">
   <input type="text" name="address[state]" id="address_state">
   <input type="text" name="address[zip]" id="address_zip">
 </form>
+```
 
 However, from a 508 perspective there's a number of things wrong here.
   - All the inputs need labels
@@ -48,10 +51,10 @@ However, from a 508 perspective there's a number of things wrong here.
 
 To fix this we could do something like this:
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" } do |f| %>
+<%= form_for Address.new, url: { action: "create" } do |f| %>
   <%= content_tag(:fieldset) do %>
     <%= content_tag(:legend, 'Type') %>
     <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
@@ -71,24 +74,30 @@ To fix this we could do something like this:
 <% end %>
 ```
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post">
+```html
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post">
   <input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
+
   <fieldset>
     <legend>Type</legend>
     <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label>
     <input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   </fieldset>
+
   <label for="address_street">Street</label>
   <input type="text" name="address[street]" id="address_street">
+
   <label for="address_city">City</label>
   <input type="text" name="address[city]" id="address_city">
+
   <label for="address_state">State</label>
   <input type="text" name="address[state]" id="address_state">
+
   <label for="address_zip">Zip</label>
   <input type="text" name="address[zip]" id="address_zip">
 </form>
-
+```
 
 We begin to see some redundancy. It would be nice if we could go back to the original form setup that took care of all of these details behind the scenes.
 We can extend the rails form builder to do just that. This also means the developer doens't need to keep track of all the different nuances, it's all built in.
@@ -97,7 +106,7 @@ We can extend the rails form builder to do just that. This also means the develo
 # Create the formbuilder
 
 
-```Ruby
+```ruby
 # lib/forms/custom_builder.rb
 
 class CustomFormBuilder < ActionView::Helpers::FormBuilder
@@ -106,10 +115,10 @@ end
 
 Using our new form builder with the previous form:
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= content_tag(:fieldset) do %>
     <%= content_tag(:legend, 'Type') %>
     <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
@@ -131,23 +140,30 @@ Using our new form builder with the previous form:
 
 The form produced is identical to the previous one.
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post">
+```html
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post">
   <input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
+
   <fieldset>
     <legend>Type</legend>
     <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label>
     <input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   </fieldset>
+
   <label for="address_street">Street</label>
   <input type="text" name="address[street]" id="address_street">
+
   <label for="address_city">City</label>
   <input type="text" name="address[city]" id="address_city">
+
   <label for="address_state">State</label>
   <input type="text" name="address[state]" id="address_state">
+
   <label for="address_zip">Zip</label>
   <input type="text" name="address[zip]" id="address_zip">
 </form>
+```
 
 The difference is that we can now make customizations in two places. In the view and in the form builder itself
 
@@ -157,14 +173,14 @@ The view, will be used to tell the builder what to build
 
 Take line 6 and 7 from `views/address/new.html.erb.`
 
-```Ruby
+```ruby
 <%= f.label :street %>
 <%= f.text_field :street %>
 ```
 
 This produced the street input with a label because 508 requires all inputs to have labels describing them. Let's see how we can leverage the form builder to take care of this for us.
 
-```Ruby
+```ruby
 # lib/forms/my_form_builder.rb
 
 class CustomFormBuilder < ActionView::Helpers::FormBuilder
@@ -177,10 +193,10 @@ end
 
 Now we can make the same for like this:
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= content_tag(:fieldset) do %>
     <%= content_tag(:legend, 'Type') %>
     <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
@@ -193,27 +209,34 @@ Now we can make the same for like this:
 <% end %>
 ```
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post">
+```html
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post">
   <input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="xShi7mTqSj7hrJzlOQnrY2a+V4UW25gautZ7KFrU2hvhMTZx9ixbrQNB3I2Z9/HNN0dkECLByx9BBPZrOdSeug==">
+
   <fieldset>
     <legend>Type</legend>
     <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label>
     <input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   </fieldset>
+
   <label for="address_street">Street</label>
   <input type="text" name="address[street]" id="address_street">
+
   <label for="address_city">City</label>
   <input type="text" name="address[city]" id="address_city">
+
   <label for="address_state">State</label>
   <input type="text" name="address[state]" id="address_state">
+
   <label for="address_zip">Zip</label>
   <input type="text" name="address[zip]" id="address_zip">
 </form>
+```
 
 Now we can also take care of the collection_radio_buttons needing a fieldset by adding another method to our form builder:
 
-```Ruby
+```ruby
 # lib/forms/custom_form_builder.rb
 
 class CustomFormBuilder < ActionView::Helpers::FormBuilder
@@ -235,10 +258,10 @@ end
 
 And our new form:
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.text_field :street %>
   <%= f.text_field :city %>
@@ -249,10 +272,10 @@ And our new form:
 
 Because we have a single place we're making changes to the inputs we can easily add more customizations. Let's say for example  we wanted to add inline input errors for all fields. If we were still using our original form without the input builder we might start by doing something like this:
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= content_tag(:fieldset) do %>
     <%= content_tag(:legend, 'Type') %>
     <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
@@ -279,10 +302,10 @@ Because we have a single place we're making changes to the inputs we can easily 
 
 However we've created another problem for 508. Errors also need to be associated with the input they're showing for. One of the most compatible ways to do this is to surround the input and error with the label tag like so:
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" } do |f| %>
+<%= form_for Address.new, url: { action: "create" } do |f| %>
   <%= content_tag(:fieldset) do %>
     <%= content_tag(:legend, 'Type') %>
     <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
@@ -311,34 +334,42 @@ However we've created another problem for 508. Errors also need to be associated
 <% end %>
 ```
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1">
-  <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="tRSBbSviPWZf8aoDGDSgvgmdOtQgJ2XgvyqMzPTOyEkvsbUgseGMXrV2km1T8e/9voK3r0r2CcInpbWFhPbKoA==">
+```html
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post" _lpchecked="1">
+  <input name="utf8" type="hidden" value="✓">
+  <input type="hidden" name="authenticity_token" value="tRSBbSviPWZf8aoDGDSgvgmdOtQgJ2XgvyqMzPTOyEkvsbUgseGMXrV2km1T8e/9voK3r0r2CcInpbWFhPbKoA==">
+
   <fieldset>
     <legend class="legend-text">Type</legend>
     <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label>
     <input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   </fieldset>
+
   <label for="address_street">
     <span class="label-text">Street</span>
     <input type="text" name="address[street]" id="address_street">
   </label>
+
   <label for="address_city">
     <span class="label-text">City</span>
     <input type="text" name="address[city]" id="address_city">
   </label>
+
   <label for="address_state">
     <span class="label-text">State</span>
     <input type="text" name="address[state]" id="address_state">
   </label>
+
   <label for="address_zip">
     <span class="label-text">Zip</span>
     <input type="text" name="address[zip]" id="address_zip">
   </label>
 </form>
+```
 
 Again, a lot of work and repitition, which opens up a lot of opportunities for mistakes. Let's go back to our form builder and take care of this there.
 
-```Ruby
+```ruby
 # lib/forms/custom_form_builder.rb
 
 class CustomFormBuilder < ActionView::Helpers::FormBuilder
@@ -364,10 +395,10 @@ end
 
 Just a couple of changes in one place and we can go back to our cleaner form that produces the same markup.
 
-```
+```ruby
 # views/address/new.html.erb
 
-<%= form_for Address.new, url: { action: "index" }, builder: CustomFormBuilder do |f| %>
+<%= form_for Address.new, url: { action: "create" }, builder: CustomFormBuilder do |f| %>
   <%= f.collection_radio_buttons :type, [['billing', 'Billing Address'] ,['mailing', 'Mailing Address']], :first, :last %>
   <%= f.text_field :street %>
   <%= f.text_field :city %>
@@ -376,27 +407,35 @@ Just a couple of changes in one place and we can go back to our cleaner form tha
 <% end %>
 ```
 
-<form class="new_address" id="new_address" action="/index" accept-charset="UTF-8" method="post" _lpchecked="1">
-  <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="tRSBbSviPWZf8aoDGDSgvgmdOtQgJ2XgvyqMzPTOyEkvsbUgseGMXrV2km1T8e/9voK3r0r2CcInpbWFhPbKoA==">
+```html
+<form class="new_address" id="new_address" action="/create" accept-charset="UTF-8" method="post" _lpchecked="1">
+  <input name="utf8" type="hidden" value="✓">
+  <input type="hidden" name="authenticity_token" value="tRSBbSviPWZf8aoDGDSgvgmdOtQgJ2XgvyqMzPTOyEkvsbUgseGMXrV2km1T8e/9voK3r0r2CcInpbWFhPbKoA==">
+
   <fieldset>
     <legend class="legend-text">Type</legend>
     <input type="radio" value="billing" name="address[type]" id="address_type_billing"><label for="address_type_billing">Billing Address</label>
     <input type="radio" value="mailing" name="address[type]" id="address_type_mailing"><label for="address_type_mailing">Mailing Address</label>
   </fieldset>
+
   <label for="address_street">
     <span class="label-text">Street</span>
     <input type="text" name="address[street]" id="address_street">
   </label>
+
   <label for="address_city">
     <span class="label-text">City</span>
     <input type="text" name="address[city]" id="address_city">
   </label>
+
   <label for="address_state">
     <span class="label-text">State</span>
     <input type="text" name="address[state]" id="address_state">
   </label>
+
   <label for="address_zip">
     <span class="label-text">Zip</span>
     <input type="text" name="address[zip]" id="address_zip">
   </label>
 </form>
+```

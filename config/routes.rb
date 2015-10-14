@@ -55,5 +55,5 @@ Rails.application.routes.draw do
   #   end
 
   get 'index' => 'sample#index'
-  post 'index' => 'sample#index'
+  post 'create' => 'sample#index'
 end
