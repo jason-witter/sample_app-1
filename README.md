@@ -14,9 +14,9 @@ By applying progressive enhancement with a focus on 508 compliance, teams can ma
 
 ### Technical
 
-Most programming languages include html templating libraries and helpers. Rails for example has their [FormBuilder](http://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html). By extending the FormBuilder and customizing the templating helpers it is possible to have consistency and allow developers to easily enhance and make changes to the html across an entire application.
+In the following sections, we're going to use a very basic address form to implement and give examples of the things that have been discussed above. This form will consist of a handful of inputs and a set of radio buttons to denote the type of address. Most programming languages include html templating libraries and helpers. In this example, we'll be using Rails, and their baked in [FormBuilder](http://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html). By extending the FormBuilder and customizing the templating helpers it is possible to have consistency and allow developers to easily enhance and make changes to the html across an entire application.
 
-We're going to use a very basic address form. We'll have some address inputs and some radio buttons to specify the type of address it is.
+To start with, this will be our very basic Address Form. We'll be showing both the Rails Form Builder ERB and the html that gets produced once that code is executed.
 
 ```ruby
 # views/address/new.html.erb
@@ -44,12 +44,12 @@ We're going to use a very basic address form. We'll have some address inputs and
 </form>
 ```
 
-However, from a 508 perspective there's a number of things wrong here.
+This is a functional bare bones form, however, from a 508 perspective there are a number of things wrong here.
   - All the inputs need labels
   - Associated radio buttons require fieldsets
   - Corresponding name/description for the related radio buttons should go in the legend
 
-To fix this we could do something like this:
+To fix this we could do something like the following:
 
 ```ruby
 # views/address/new.html.erb
@@ -99,8 +99,8 @@ To fix this we could do something like this:
 </form>
 ```
 
-We begin to see some redundancy. It would be nice if we could go back to the original form setup that took care of all of these details behind the scenes.
-We can extend the rails form builder to do just that. This also means the developer doens't need to keep track of all the different nuances, it's all built in.
+This is progress, but this modification has introduced some redundancy. It would be nice if we could go back to the original form setup that took care of all of these details behind the scenes.
+Luckily, we can extend the rails form builder to do just that. A good side effect of this extension is that the developer doesn't need to keep track of all the different nuances; it's all built in.
 
 
 # Create the formbuilder
@@ -113,7 +113,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 end
 ```
 
-Using our new form builder with the previous form:
+Now when we make use of our new form builder with the previous form:
 
 ```ruby
 # views/address/new.html.erb
@@ -165,11 +165,11 @@ The form produced is identical to the previous one.
 </form>
 ```
 
-The difference is that we can now make customizations in two places. In the view and in the form builder itself
+The difference is that we can now make customizations in two places. In the view and in the form builder itself.
 
 This provides us with a few benefits:
-The builder will take care of the html consistancy and all the underlying 508 requirements
-The view, will be used to tell the builder what to build
+  - The builder will take care of the html consistancy and all the underlying 508 requirements
+  - The view, will be used to tell the builder what to build
 
 Take line 6 and 7 from `views/address/new.html.erb.`
 
@@ -191,7 +191,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 end
 ```
 
-Now we can make the same for like this:
+This allows us to make the same form with fewer lines of code like this:
 
 ```ruby
 # views/address/new.html.erb
@@ -234,7 +234,7 @@ Now we can make the same for like this:
 </form>
 ```
 
-Now we can also take care of the collection_radio_buttons needing a fieldset by adding another method to our form builder:
+Now we can also consolidate the code needed to give a collection_radio_button a fieldset by adding another method to our form builder:
 
 ```ruby
 # lib/forms/custom_form_builder.rb
@@ -270,7 +270,7 @@ And our new form:
 <% end %>
 ```
 
-Because we have a single place we're making changes to the inputs we can easily add more customizations. Let's say for example  we wanted to add inline input errors for all fields. If we were still using our original form without the input builder we might start by doing something like this:
+Because we have a single place we're making changes to the inputs we can easily add more customizations. Let's say for example we wanted to add inline input errors for all fields. If we were still using our original form without the input builder we might start by doing this:
 
 ```ruby
 # views/address/new.html.erb
@@ -367,7 +367,7 @@ However we've created another problem for 508. Errors also need to be associated
 </form>
 ```
 
-Again, a lot of work and repitition, which opens up a lot of opportunities for mistakes. Let's go back to our form builder and take care of this there.
+Once again, this implementation requires a lot of work and repitition, which in turn opens up a lot of opportunities for mistakes. Let's go back to our form builder and take care of this there.
 
 ```ruby
 # lib/forms/custom_form_builder.rb
@@ -393,7 +393,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 end
 ```
 
-Just a couple of changes in one place and we can go back to our cleaner form that produces the same markup.
+By making a couple of changes in one place, we can go back to the clean form and it will produce the same markup.
 
 ```ruby
 # views/address/new.html.erb
